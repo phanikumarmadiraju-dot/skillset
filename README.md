@@ -59,6 +59,10 @@ Configure these in the Skillset GitHub repository under **Settings → Secrets a
 
 The scheduled job cannot read browser-local preferences. Set `JOB_ROLE` and `JOB_SKILLS` before the first run. Credentials belong in Actions secrets, never in `.env.example` or committed files. GitHub scheduled workflows may start a little later than their scheduled time during periods of high load.
 
+## GitHub Pages preview
+
+The `Deploy Skillset dashboard to GitHub Pages` workflow deploys the latest `index.html` from `main` after each push. The hosted page is a static preview only and cannot run the Node.js job-search API; use the local setup steps above to search and fetch jobs. The preview displays this limitation and keeps its API status disconnected.
+
 ## Troubleshooting
 
 - **"Failed to fetch" / can't reach the dashboard server:** Start the server with `npm start` from the `job-dashboard` folder, then open <http://127.0.0.1:3000>. Keep the terminal running while using the dashboard. Do not open `index.html` directly as a file.

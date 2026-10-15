@@ -152,6 +152,7 @@
       <form class="panel preferences" id="searchForm">
         <h2 class="panel-heading">Your profile</h2>
         <p class="panel-subtitle">Add your profile details and choose skills to find matching roles.</p>
+        <p class="status" id="pagesNotice" tabindex="-1" hidden>GitHub Pages hosts the dashboard preview only. To search jobs, run the app locally with <code>npm start</code>.</p>
 
         <label for="profileUrl">LinkedIn profile URL</label>
         <input id="profileUrl" name="profileUrl" type="url" placeholder="https://www.linkedin.com/in/your-profile">
@@ -218,6 +219,7 @@
     const locationInput = document.querySelector("#location");
     const minExperienceInput = document.querySelector("#minExperience");
     const maxExperienceInput = document.querySelector("#maxExperience");
+    const pagesNotice = document.querySelector("#pagesNotice");
     const searchButton = document.querySelector("#searchButton");
     const statusBox = document.querySelector("#status");
     const jobList = document.querySelector("#jobList");
@@ -225,6 +227,7 @@
     const apiStatus = document.querySelector("#apiStatus");
     const apiStatusText = document.querySelector("#apiStatusText");
     let skillOptions = [];
+    const isStaticPreview = location.hostname.endsWith(".github.io");
 
     function setApiStatus(connected) {
       apiStatus.classList.toggle("live", connected);
@@ -232,6 +235,10 @@
     }
 
     async function checkApiStatus() {
+      if (isStaticPreview) {
+        setApiStatus(false);
+        return;
+      }
       try {
         const response = await fetch("/api/status");
         if (!response.ok) throw new Error(`API status failed (HTTP ${response.status}).`);
@@ -455,6 +462,11 @@
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (isStaticPreview) {
+        pagesNotice.hidden = false;
+        pagesNotice.focus();
+        return;
+      }
       const skills = getSkills();
       const role = roleInput.value.trim();
       if (skills.length === 0) {
@@ -517,6 +529,7 @@
     });
 
     readPreferences();
+    pagesNotice.hidden = !isStaticPreview;
     checkApiStatus();
     window.setInterval(checkApiStatus, 30000);
   </script>
