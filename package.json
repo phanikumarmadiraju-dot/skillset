@@ -1,0 +1,12 @@
+{
+  "name": "skills-job-dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Local job search dashboard powered by JSearch",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

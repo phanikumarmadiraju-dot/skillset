@@ -1,2 +1,44 @@
-# skillset
-Find jobs with your skill set
+# Skills Job Dashboard
+
+A local dashboard that searches job listings through JSearch on RapidAPI and ranks the results by the skills you enter. The dashboard does not sign in to, scrape, or read your LinkedIn profile. The profile shortcut is set in the page; your skills are saved in your browser, and the RapidAPI key is kept on the local server.
+
+## Run locally
+
+1. Install Node.js 18 or newer.
+2. Subscribe to JSearch on RapidAPI and copy your RapidAPI key.
+3. Store the key locally in `job-dashboard/.env` (copy `.env.example` and replace the blank value). This file is ignored by Git:
+
+   ```dotenv
+   RAPIDAPI_KEY=replace-with-your-rotated-rapidapi-key
+   ```
+
+   Or set `RAPIDAPI_KEY` in your environment before starting the server:
+
+   **PowerShell**
+
+   ```powershell
+   $env:RAPIDAPI_KEY = "replace-with-your-rotated-rapidapi-key"
+   npm start
+   ```
+
+   **macOS/Linux**
+
+   ```sh
+   RAPIDAPI_KEY="replace-with-your-rotated-rapidapi-key" npm start
+   ```
+
+4. Open <http://127.0.0.1:3000>.
+
+Add a role or keyword and an optional location. The dashboard makes one JSearch request for up to five pages, filters out listings with no exact skill matches, then shows up to 20 matching jobs ranked by match percentage. Match scores are estimates, not recommendations to apply. The number of matches depends on JSearch availability and your RapidAPI quota.
+
+The server binds only to `127.0.0.1`; do not expose it to the public internet. JSearch availability, result limits, and usage quotas depend on your RapidAPI plan.
+
+The server calls the RapidAPI MCP gateway at `https://mcp.rapidapi.com`, using the `Job_Search` tool and the `x-api-host: jsearch.p.rapidapi.com` and `x-api-key` headers from the MCP configuration. The API key stays on the local server.
+
+The header status indicator checks the gateway for the `Job_Search` tool every 30 seconds. Successful searches set it to green “API is live”; a failed search sets it to “API disconnected” until a search succeeds again.
+
+## Troubleshooting
+
+- **"Failed to fetch" / can't reach the dashboard server:** Start the server with `npm start` from the `job-dashboard` folder, then open <http://127.0.0.1:3000>. Keep the terminal running while using the dashboard. Do not open `index.html` directly as a file.
+- **RAPIDAPI_KEY setup message:** Add the key to `job-dashboard/.env` or set it in the same terminal session before running `npm start`. If the server is already running, stop it with `Ctrl+C`, set the key, then start it again.
+- **JSearch rejects the key or returns an error:** Check that your RapidAPI key is correct and that your account has an active JSearch subscription and available quota.
