@@ -1,0 +1,38 @@
+name: Daily Skillset job email
+
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  send-daily-digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      JOB_ROLE: ${{ vars.JOB_ROLE }}
+      JOB_SKILLS: ${{ vars.JOB_SKILLS }}
+      JOB_LOCATION: ${{ vars.JOB_LOCATION }}
+      MIN_EXPERIENCE: ${{ vars.MIN_EXPERIENCE }}
+      MAX_EXPERIENCE: ${{ vars.MAX_EXPERIENCE }}
+      RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+      GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+    steps:
+      - name: Check out Skillset
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Search jobs and send email
+        run: npm run daily

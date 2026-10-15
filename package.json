@@ -4,7 +4,12 @@
   "version": "1.0.0",
   "description": "Local job search dashboard powered by JSearch",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "daily": "node daily-digest.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "nodemailer": "^10.1.1"
   },
   "engines": {
     "node": ">=18"

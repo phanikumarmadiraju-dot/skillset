@@ -37,6 +37,28 @@ The server calls the RapidAPI MCP gateway at `https://mcp.rapidapi.com`, using t
 
 The header status indicator checks the gateway for the `Job_Search` tool every 30 seconds. Successful searches set it to green “API is live”; a failed search sets it to “API disconnected” until a search succeeds again.
 
+## Daily email with GitHub Actions
+
+The `Daily Skillset job email` workflow runs every day at 9:00 AM India Standard Time (03:30 UTC). It can also be started manually from the repository’s **Actions** tab. The workflow searches JSearch, ranks by selected skills, applies optional experience bounds, and emails up to 20 matching jobs to `phanikumar.madiraju@gmail.com`. If there are no matches, it sends a no-results email.
+
+Configure these in the Skillset GitHub repository under **Settings → Secrets and variables → Actions**:
+
+**Repository variables**
+
+- `JOB_ROLE` — role or search phrase, for example `Site Reliability Engineer`
+- `JOB_SKILLS` — comma-separated skills, for example `AWS, Kubernetes, SRE`
+- `JOB_LOCATION` — optional location, for example `Bengaluru, India`
+- `MIN_EXPERIENCE` — optional minimum years (whole number)
+- `MAX_EXPERIENCE` — optional maximum years (whole number)
+
+**Repository secrets**
+
+- `RAPIDAPI_KEY` — your RapidAPI key
+- `GMAIL_ADDRESS` — the Gmail account that sends the digest
+- `GMAIL_APP_PASSWORD` — an App Password generated for that Gmail account (not its regular password)
+
+The scheduled job cannot read browser-local preferences. Set `JOB_ROLE` and `JOB_SKILLS` before the first run. Credentials belong in Actions secrets, never in `.env.example` or committed files. GitHub scheduled workflows may start a little later than their scheduled time during periods of high load.
+
 ## Troubleshooting
 
 - **"Failed to fetch" / can't reach the dashboard server:** Start the server with `npm start` from the `job-dashboard` folder, then open <http://127.0.0.1:3000>. Keep the terminal running while using the dashboard. Do not open `index.html` directly as a file.
