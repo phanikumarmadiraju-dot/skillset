@@ -1,6 +1,6 @@
 # Skills Job Dashboard
 
-A local dashboard that searches job listings through JSearch on RapidAPI and ranks the results by the skills you enter. The dashboard does not sign in to, scrape, or read your LinkedIn profile. The profile shortcut is set in the page; your skills are saved in your browser, and the RapidAPI key is kept on the local server.
+A local dashboard that searches job listings through JSearch on RapidAPI and ranks the results by skills you choose. Add skill options yourself, select multiple skills, and optionally enter a LinkedIn profile URL and minimum/maximum experience in years. These preferences are saved in your browser. The dashboard does not sign in to, scrape, or read your LinkedIn profile; the profile shortcut is shown only for a valid LinkedIn URL. The RapidAPI key is kept on the local server.
 
 ## Run locally
 
@@ -29,7 +29,7 @@ A local dashboard that searches job listings through JSearch on RapidAPI and ran
 
 4. Open <http://127.0.0.1:3000>.
 
-Add a role or keyword and an optional location. The dashboard makes one JSearch request for up to five pages, filters out listings with no exact skill matches, then shows up to 20 matching jobs ranked by match percentage. Match scores are estimates, not recommendations to apply. The number of matches depends on JSearch availability and your RapidAPI quota.
+Add one or more skill options and select the skills you want matched, then enter a role or keyword and an optional location. The dashboard makes one JSearch request for up to five pages, filters out listings with no selected-skill matches, and shows up to 20 matching jobs ranked by match percentage. Optional experience bounds filter listings whose descriptions state an experience requirement outside the range; listings without a stated experience requirement are retained. Match scores are estimates, not recommendations to apply. The number of matches depends on JSearch availability and your RapidAPI quota.
 
 The server binds only to `127.0.0.1`; do not expose it to the public internet. JSearch availability, result limits, and usage quotas depend on your RapidAPI plan.
 
